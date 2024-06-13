@@ -1,6 +1,8 @@
 import streamlit as st
+import nltk
 from nltk.sentiment import SentimentIntensityAnalyzer
 
+nltk.download('vader_lexicon')
 st.title("Identify the sentiments by Paragraph(s)")
 
 analyzer = SentimentIntensityAnalyzer()
