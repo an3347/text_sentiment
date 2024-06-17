@@ -43,7 +43,7 @@ if paragraphs != "":
     st.plotly_chart(pos_figure_p)
 
     st.subheader("Neutral Sentiment Chart of Paragraph")
-    pos_figure_p = px.line(x=para_count, y=negative, labels={"x": "Paragraph ", "y": "Neutrality"})
+    pos_figure_p = px.line(x=para_count, y=neutral, labels={"x": "Paragraph ", "y": "Neutrality"})
     st.plotly_chart(pos_figure_p)
 
     st.subheader("Negative Sentiment Chart of Paragraph")
