@@ -33,8 +33,6 @@ for key, value in enumerate(findings):
         else:
             output += f"paragraph {key + 1 - i} is a neutral paragraph" + "\n"
 
-st.text(output)
-
 if paragraphs != "":
     score = analyzer.polarity_scores(paragraphs)
 
@@ -45,6 +43,8 @@ if paragraphs != "":
     st.subheader("Negativity Chart of Paragraph")
     pos_figure_n = px.line(x=para_count, y=negative, labels={"x": "Paragraph ", "y": "Negativity"})
     st.plotly_chart(pos_figure_n)
+
+    st.text(output)
 
     if score["pos"] > score["neg"]:
         st.text("overall it is a positive text")
