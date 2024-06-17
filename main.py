@@ -1,5 +1,6 @@
 import streamlit as st
 import nltk
+import plotly.express as px
 from nltk.sentiment import SentimentIntensityAnalyzer
 
 nltk.download('vader_lexicon')
@@ -10,13 +11,21 @@ analyzer = SentimentIntensityAnalyzer()
 paragraphs = st.text_area("Input the text to analyze sentiment: ")
 findings = paragraphs.split("\n")
 
+negative = []
+positive = []
+para_count = []
 i = 0
+p = 0
 output = ""
 for key, value in enumerate(findings):
     if value == "":
         i += 1
     else:
         score = analyzer.polarity_scores(value)
+        p += 1
+        positive.append(score["pos"])
+        negative.append(score["neg"])
+        para_count.append(p)
         if score["pos"] > score["neg"]:
             output += f"paragraph {key + 1 - i} is a positive paragraph" + "\n"
         elif score["neg"] > score["pos"]:
@@ -28,11 +37,21 @@ st.text(output)
 
 if paragraphs != "":
     score = analyzer.polarity_scores(paragraphs)
+
+    st.subheader("Positivity Chart of Paragraph")
+    pos_figure_p = px.line(x=para_count, y=positive, labels={"x": "Paragraph ", "y": "Positivity"})
+    st.plotly_chart(pos_figure_p)
+
+    st.subheader("Negativity Chart of Paragraph")
+    pos_figure_n = px.line(x=para_count, y=negative, labels={"x": "Paragraph ", "y": "Negativity"})
+    st.plotly_chart(pos_figure_n)
+
     if score["pos"] > score["neg"]:
         st.text("overall it is a positive text")
     elif score["neg"] > score["pos"]:
         st.text("overall it is a negative text")
     else:
         st.text("overall it is a neutral text")
+
 
     # print(findings)
