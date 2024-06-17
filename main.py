@@ -13,6 +13,7 @@ findings = paragraphs.split("\n")
 
 negative = []
 positive = []
+neutral = []
 para_count = []
 i = 0
 p = 0
@@ -23,8 +24,9 @@ for key, value in enumerate(findings):
     else:
         score = analyzer.polarity_scores(value)
         p += 1
-        positive.append(score["pos"])
-        negative.append(score["neg"])
+        positive.append(score["pos"] * 100)
+        negative.append(score["neg"] * 100)
+        neutral.append(score["neu"] * 100)
         para_count.append(p)
         if score["pos"] > score["neg"]:
             output += f"paragraph {key + 1 - i} is a positive paragraph" + "\n"
@@ -36,11 +38,15 @@ for key, value in enumerate(findings):
 if paragraphs != "":
     score = analyzer.polarity_scores(paragraphs)
 
-    st.subheader("Positivity Chart of Paragraph")
+    st.subheader("Positive Sentiment Chart of Paragraph")
     pos_figure_p = px.line(x=para_count, y=positive, labels={"x": "Paragraph ", "y": "Positivity"})
     st.plotly_chart(pos_figure_p)
 
-    st.subheader("Negativity Chart of Paragraph")
+    st.subheader("Neutral Sentiment Chart of Paragraph")
+    pos_figure_p = px.line(x=para_count, y=negative, labels={"x": "Paragraph ", "y": "Neutrality"})
+    st.plotly_chart(pos_figure_p)
+
+    st.subheader("Negative Sentiment Chart of Paragraph")
     pos_figure_n = px.line(x=para_count, y=negative, labels={"x": "Paragraph ", "y": "Negativity"})
     st.plotly_chart(pos_figure_n)
 
